@@ -1,7 +1,14 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+const config: NextConfig = {
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        'localhost:3000', // localhost
+        'https://solid-bassoon-rp496v9gj9w3gj6-3000.app.github.dev/', // Codespaces
+      ],
+    },
+  },
+}
 
-export default nextConfig;
+export default config
