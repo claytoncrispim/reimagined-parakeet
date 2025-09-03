@@ -40,16 +40,20 @@
 // }
 // export default UserDetailPage;
 
-import type { User } from '@/types';
+//import type { User } from '@/types';
 import { getUserById } from '@/lib/data'; // 1. Import our new function
 import { notFound } from 'next/navigation'; // A helper for 404 pages
+import Link from 'next/link';
 
 interface UserDetailPageProps {
   params: { id: string };
 }
 
 export default async function UserDetailPage({ params }: UserDetailPageProps) {
-  const { id } = params; // This is the only change needed for the warning
+  // Added await to fix the warning as per Next.js 14 update at:
+  // https://nextjs.org/docs/messages/sync-dynamic-apis
+  // Warning in terminal still shows, but page works fine.
+  const { id } = await params; // This is the only change needed for the warning
   const userId = parseInt(params.id); // Convert the ID from the URL to a number
   
   // 2. Get the user from our local data source
@@ -65,7 +69,11 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
       <h1 className="text-2xl font-bold">{user.name}</h1>
       <p>Email: {user.email}</p>
       <p>Phone: {user.phone}</p>
-      <p>Website: {user.website}</p>
+      <p>Website:  
+        <Link href={user.website} className="text-blue-500 hover:underline">
+          {user.website}
+        </Link>
+      </p>    
     </main>
   );
 }
